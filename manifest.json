@@ -1,0 +1,13 @@
+{
+  "name": "Sound Bath by Wyatt",
+  "short_name": "Sound Bath",
+  "description": "Restorative sound bath sessions in Reno & Sparks, Nevada.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#21243f",
+  "theme_color": "#21243f",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
