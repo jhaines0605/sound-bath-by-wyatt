@@ -700,7 +700,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 <!-- ============================ HERO ============================ -->
 <section class="hero" id="top">
   <!-- EDIT: PHOTO (hero) — optional image/video goes inside .hero-media (see CSS note). -->
-  <div class="hero-media" aria-hidden="true"><!-- optional <img> or <video> here --></div>
+  <div class="hero-media" aria-hidden="true"><img src="/desert-gong.jpg" alt="" style="object-position: 32% 42%;"></div>
   <div class="hero-veil" aria-hidden="true"></div>
 
   <!-- Signature: breathing resonance rings + central glow -->
@@ -859,6 +859,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       <span class="eyebrow">A Look Inside</span>
       <h2>The space &amp; the sound</h2>
       <p>Glimpses of the bowls, the room, and the stillness that settles in.</p>
+    </div>
+
+    <!-- Short clip — has sound, so it plays on tap rather than autoplaying. -->
+    <div class="reveal" style="max-width:300px; margin:0 auto 2.8rem;">
+      <video controls playsinline preload="metadata" poster="/video-poster.jpg"
+             style="width:100%; border-radius:16px; box-shadow:0 20px 44px -20px rgba(33,36,63,.55); display:block; background:#12142a;">
+        <source src="/soundbath-video.mp4" type="video/mp4">
+        Your browser doesn't support embedded video.
+      </video>
+      <p style="margin:0.9rem 0 0; text-align:center; font-size:0.9rem; color:var(--ink-soft); font-style:italic;">A moment of sound — tap to listen.</p>
     </div>
 
     <div class="gallery-grid" id="galleryGrid"></div>
