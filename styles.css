@@ -862,3 +862,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Text only for screen readers */
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---- Session cards (descriptions only; booking happens on Linktree) ---- */
+.session-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 980px; margin-inline: auto; }
+.session-grid .offer { padding: 2.1rem 2rem; }
+.session-grid .offer h3 { font-size: 1.45rem; margin-bottom: 0.7rem; }
+.session-grid .offer .btn { width: auto; align-self: flex-start; --pad-y: 0.75rem; --pad-x: 1.6rem; font-size: 0.88rem; }
+.offer.wide {
+  grid-column: 1 / -1; border-color: transparent; color: var(--on-dark);
+  background: radial-gradient(120% 140% at 90% 0%, #2a2e52 0%, var(--indigo) 55%, var(--indigo-deep) 100%);
+}
+.offer.wide:hover { border-color: transparent; }
+.offer.wide h3 { color: #fff; }
+.offer.wide .offer-desc { color: var(--on-dark-soft); max-width: 60ch; }
+.offer.wide .tag { color: var(--gold); background: rgba(193,154,78,.16); }
+.type-grid .offer .offer-desc { margin-bottom: 0; font-size: 0.95rem; }
+@media (max-width: 780px) {
+  .session-grid { grid-template-columns: 1fr; }
+}

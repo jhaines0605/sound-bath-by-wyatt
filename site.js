@@ -19,164 +19,34 @@
            '" target="_blank" rel="noopener">' + text + '</a>';
   };
 
-  /* ---------------- Dates ---------------- */
-  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  var WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  var ORDINALS = { "1st": 1, "first": 1, "2nd": 2, "second": 2, "3rd": 3, "third": 3, "4th": 4, "fourth": 4, "last": -1 };
-  var ORDINAL_WORDS = { "1": "First", "2": "Second", "3": "Third", "4": "Fourth", "-1": "Last" };
+  var BOOKING = (CONTENT.bookingLink || "https://linktr.ee/soundbaths").trim();
 
-  var now = new Date();
-  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  // "2nd Friday" -> { n: 2, day: 5 }   ·   "last Sunday" -> { n: -1, day: 0 }
-  function parseRepeat(text) {
-    var m = String(text || "").toLowerCase().match(/(1st|first|2nd|second|3rd|third|4th|fourth|last)\s+(sun|mon|tue|wed|thu|fri|sat)/);
-    if (!m) return null;
-    return { n: ORDINALS[m[1]], day: ["sun","mon","tue","wed","thu","fri","sat"].indexOf(m[2]) };
-  }
-  // The date of that pattern in a given month (month index may overflow into the next year)
-  function dateInMonth(year, month, rule) {
-    if (rule.n > 0) {
-      var first = new Date(year, month, 1);
-      return new Date(year, month, 1 + ((rule.day - first.getDay() + 7) % 7) + (rule.n - 1) * 7);
-    }
-    var last = new Date(year, month + 1, 0);
-    return new Date(year, month, last.getDate() - ((last.getDay() - rule.day + 7) % 7));
-  }
-  function parseDate(str) {
-    var p = String(str || "").split("-");
-    var d = new Date(+p[0], +p[1] - 1, +p[2]);
-    return isNaN(d) ? null : d;
-  }
-  function isoDate(d) {
-    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
-  }
-  function nextDate(c) {
-    if (c.date) {                               // one-time: "YYYY-MM-DD"
-      var d = parseDate(c.date);
-      return !d || d < today ? null : d;
-    }
-    var rule = parseRepeat(c.repeats);
-    if (!rule) return null;
-    var skip = [].concat(c.skip || []);
-    for (var i = 0; i < 4; i++) {
-      var next = dateInMonth(today.getFullYear(), today.getMonth() + i, rule);
-      if (next >= today && skip.indexOf(isoDate(next)) === -1) return next;
-    }
-    return null;
-  }
-  function longDate(d) {
-    return WEEKDAYS[d.getDay()] + ", " + MONTHS[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+  /* ---------------- Booking buttons ---------------- */
+  // Every link marked  data-booking  goes to the booking link set in content.js.
+  function wireBookingLinks() {
+    document.querySelectorAll("a[data-booking]").forEach(function (a) {
+      a.href = BOOKING;
+      a.target = "_blank";
+      a.rel = "noopener";
+    });
   }
 
-  /* ---------------- Special events (big featured cards) ---------------- */
-  function renderSpecialEvents() {
-    var box = document.getElementById("specialEvents");
-    if (!box) return;
-    var compact = box.getAttribute("data-compact") === "true";
-    var events = (CONTENT.specialEvents || []).map(function (e) {
-      var d = parseDate(e.date);
-      return d && d >= today ? { e: e, d: d } : null;
-    }).filter(Boolean).sort(function (a, b) { return a.d - b.d; });
-
-    if (!events.length) { box.hidden = true; return; }
-
-    box.innerHTML = events.map(function (item) {
-      var e = item.e, d = item.d;
-      var link = (e.link || "").trim();
-      var btn = link
-        ? '<a class="btn btn-primary" href="' + esc(link) + '" target="_blank" rel="noopener">' + esc(e.cta || "Book your place") + '</a>'
-        : '<a class="btn btn-primary" href="contact.html?topic=' + encodeURIComponent(e.title || "Special event") + '#contact-form">Ask about tickets</a>';
-      var where = esc(e.where || "");
-      if (where && e.map) where = mapLink(where, e.map);
+  /* ---------------- Session cards ---------------- */
+  function renderSessions() {
+    var grid = document.getElementById("sessionGrid");
+    if (!grid) return;
+    var compact = grid.getAttribute("data-compact") === "true";
+    var items = (CONTENT.sessions || []).filter(function (s) { return s && s.title && !(compact && s.wide); });
+    if (compact) items = items.slice(0, 4);
+    grid.innerHTML = items.map(function (s, i) {
       return (
-        '<article class="event-feature reveal">' +
-          (e.image ? '<div class="ev-media"><img src="' + esc(e.image) + '" alt="' + esc(e.imageAlt || e.title || "") + '" loading="lazy"></div>' : '') +
-          '<div class="ev-body">' +
-            (e.badge ? '<span class="ev-badge">' + esc(e.badge) + '</span>' : '') +
-            '<h3>' + esc(e.title || "Special event") + '</h3>' +
-            (e.tagline ? '<p class="ev-tagline">' + esc(e.tagline) + '</p>' : '') +
-            '<ul class="ev-facts">' +
-              '<li><span class="ev-label">When</span><span><time datetime="' + isoDate(d) + '">' + longDate(d) + '</time>' +
-                (e.time ? '<br>' + esc(e.time) : '') + '</span></li>' +
-              (where ? '<li><span class="ev-label">Where</span><span>' + where + '</span></li>' : '') +
-              (e.tickets ? '<li><span class="ev-label">Tickets</span><span>' + esc(e.tickets) + '</span></li>' : '') +
-            '</ul>' +
-            (!compact && e.desc ? '<p class="ev-desc">' + esc(e.desc) + '</p>' : '') +
-            '<div class="ev-actions">' + btn + (e.note ? '<p class="ev-note">' + esc(e.note) + '</p>' : '') + '</div>' +
-          '</div>' +
-        '</article>'
-      );
-    }).join("");
-  }
-
-  /* ---------------- Monthly sessions ---------------- */
-  function renderSchedule() {
-    var list = document.getElementById("scheduleList");
-    if (!list) return;
-    var limit = parseInt(list.getAttribute("data-limit") || "0", 10);
-
-    var items = (CONTENT.classes || []).map(function (c) {
-      var d = nextDate(c);
-      if (!d) return null;
-      var extra = c[MONTHS[d.getMonth()].toLowerCase()] || {};   // e.g. october: { ... }
-      var s = {};
-      for (var k in c) s[k] = c[k];
-      for (var k2 in extra) s[k2] = extra[k2];
-      s.dateObj = d;
-      return s;
-    }).filter(Boolean).sort(function (a, b) { return a.dateObj - b.dateObj; });
-    if (limit > 0) items = items.slice(0, limit);
-
-    if (!items.length) {
-      list.innerHTML =
-        '<p class="schedule-empty reveal">New sessions are being scheduled. ' +
-        '<a href="#newsletter">Join the email list</a> and you\'ll be the first to know when the next one opens.</p>';
-      return;
-    }
-
-    var labels = { few: "Few spots left", full: "Full" };
-    list.innerHTML = items.map(function (c, i) {
-      var d = c.dateObj;
-      var isToday = d.getTime() === today.getTime();
-      var status = (c.status || "").toLowerCase();
-      var isFull = status === "full";
-      var link = (c.link || "").trim();
-      var href = link ? esc(link) : "contact.html?topic=" + encodeURIComponent("Upcoming session") + "#contact-form";
-      var target = link ? ' target="_blank" rel="noopener"' : "";
-      var label = esc((c.cta && c.cta.trim()) || (isFull ? "Join the waitlist" : "View dates & book"));
-      var btnClass = isFull ? "btn-outline-dark" : "btn-primary";
-
-      var where = esc(c.where || "");
-      if (where && c.map) where = mapLink(where, c.map);
-      var meta = '<span class="class-time">' + esc(c.time || "") + '</span>';
-      if (where) meta += '<span class="dot">·</span>' + where;
-
-      var rule = parseRepeat(c.repeats);
-      var repeatText = rule ? ORDINAL_WORDS[String(rule.n)] + " " + WEEKDAYS[rule.day] + " of every month" : "";
-      var fullDate = longDate(d);
-      var pill = isToday ? '<span class="status today">Today</span>'
-               : (labels[status] ? '<span class="status ' + status + '">' + labels[status] + '</span>' : '');
-
-      return (
-        '<article class="class-card reveal' + (isFull ? " is-full" : "") + delayClass(i) + '">' +
-          '<div class="class-main">' +
-            '<time class="class-date" datetime="' + isoDate(d) + '" title="' + fullDate + '">' +
-              '<span class="cd-m">' + MONTHS[d.getMonth()].slice(0, 3) + '</span>' +
-              '<span class="cd-d">' + d.getDate() + '</span>' +
-              '<span class="cd-w">' + WEEKDAYS[d.getDay()].slice(0, 3) + '</span>' +
-            '</time>' +
-            '<div class="class-info">' +
-              '<h3>' + esc(c.title || "Sound Bath Session") + '</h3>' +
-              '<div class="class-when">' + meta + '</div>' +
-              (c.desc ? '<p class="class-desc">' + esc(c.desc) + '</p>' : '') +
-              (repeatText ? '<p class="class-repeat">' + repeatText + '</p>' : '') +
-            '</div>' +
-          '</div>' +
-          '<div class="class-action">' + pill +
-            '<a class="btn ' + btnClass + '" href="' + href + '"' + target +
-              ' aria-label="' + label + ': ' + esc(c.title || "session") + ', ' + fullDate + '">' + label + '</a>' +
-          '</div>' +
+        '<article class="offer reveal' + (s.wide ? " wide" : "") + delayClass(i) + '">' +
+          (s.where ? '<span class="tag">' + esc(s.where) + '</span>' : '') +
+          '<h3>' + esc(s.title) + '</h3>' +
+          (s.desc ? '<p class="offer-desc">' + esc(s.desc) + '</p>' : '') +
+          (compact ? '' :
+            '<a class="btn ' + (s.wide ? "btn-primary" : "btn-outline-dark") + '" href="' + esc(BOOKING) + '" target="_blank" rel="noopener"' +
+            ' aria-label="Book a session: ' + esc(s.title) + '">' + (s.wide ? "See upcoming events" : "Book a session") + '</a>') +
         '</article>'
       );
     }).join("");
@@ -220,8 +90,8 @@
     }).join("");
   }
 
-  safe(renderSpecialEvents);
-  safe(renderSchedule);
+  safe(renderSessions);
+  safe(wireBookingLinks);
   safe(renderReviews);
   safe(renderGallery);
 

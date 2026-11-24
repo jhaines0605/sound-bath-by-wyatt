@@ -5,15 +5,16 @@ A plain HTML site (no build step) hosted on Netlify, which deploys every push to
 ## Pages
 | File | Page |
 |---|---|
-| `index.html` | Home: what a sound bath is, next few sessions, kind words |
-| `sessions.html` | Special events, monthly sessions, what to expect, private sessions |
+| `index.html` | Home: what a sound bath is, the session types, kind words |
+| `sessions.html` | Session types, what to expect, private sessions |
 | `about.html` | Wyatt's story, philosophy, instruments + gallery, monochord for sale |
 | `faq.html` | 40 questions & answers, grouped by topic, with search |
 | `contact.html` | Contact form (Netlify Forms, form name `contact`) |
 
 ## Where to make common edits
-- **Schedule, special events, reviews, gallery photos** → `content.js` (instructions inside).
-  Monthly session dates update themselves; special events disappear the day after they happen.
+- **Dates, times, tickets** → not on the website. They live on Wyatt's Linktree
+  (linktr.ee/soundbaths); every "Book now" / "Book a session" button goes there.
+- **Session descriptions, booking link, reviews, gallery photos** → `content.js` (instructions inside).
 - **Look and colors** → `styles.css` (palette at the top).
 - **Menu and footer** → repeated at the top and bottom of each page; change all five.
 - **Monochord sells** → delete the `MONOCHORD (FOR SALE)` section in `about.html` and the

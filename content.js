@@ -1,8 +1,13 @@
 /* ===================================================================
    SOUND BATH BY WYATT — EVERYDAY EDITS LIVE IN THIS ONE FILE
    -------------------------------------------------------------------
-   Schedule, special events, reviews and gallery photos for the whole
-   site come from here. Change this file and every page updates.
+   Session descriptions, the booking link, reviews and gallery photos
+   for the whole site come from here. Change this file and every page
+   updates.
+
+   Dates and times are NOT on the website — they live on Wyatt's
+   Linktree, and every "Book a session" button goes there. So when a
+   date, time or location changes, update the Linktree, not this file.
 
    Keep the punctuation (quotes, commas, brackets) exactly as shown —
    just swap the words between the quote marks.
@@ -10,91 +15,41 @@
 
 const SITE_CONTENT = {
 
-  /* ---- SPECIAL EVENTS: one-time events, shown big at the top -------
-     Shown at the top of the Sessions page and on the Home page until
-     the day after the event, then they disappear on their own.
-       date:   "YYYY-MM-DD"
-       link:   the ticket page (Eventbrite etc.). Leave "" and the
-               button asks people to get in touch instead.
-       image:  a photo in the images folder (optional)               */
-  specialEvents: [
-    {
-      title: "The Year-End Reset",
-      badge: "Special event · Palm Springs, CA",
-      tagline: "Close the year in sound. Make space for what comes next.",
-      date: "2026-12-30",
-      time: "6:00–7:30 PM · doors open 5:30 PM",
-      where: "The Yoga Clinic · 1701 N Palm Canyon Dr, Ste 3, Palm Springs, CA 92262",
-      map: "1701 N Palm Canyon Dr, Ste 3, Palm Springs, CA 92262",
-      tickets: "$55 per person · 20 places only · first-timers welcome",
-      desc: "In the quiet between Christmas and New Year, settle in for 55 minutes of sound with planetary gongs, large-format crystal bowls, chimes, and Tibetan bowls. A listening practice with nothing to fix and nothing to get right. Simply rest, listen, and let the year settle. 55 minutes of sound, approximately 90 minutes together.",
-      image: "images/year-end-reset.jpg",
-      imageAlt: "Five planetary gongs and glowing crystal singing bowls set up beside a pool at night",
-      link: "https://linktr.ee/soundbaths",
-      cta: "Book your place",
-      note: "Tickets on Eventbrite and through The Yoga Clinic (clinic.yoga)."
-    }
-  ],
+  /* ---- BOOKING LINK: where every "Book a session" / "Book now" button goes */
+  bookingLink: "https://linktr.ee/soundbaths",
 
-  /* ---- MONTHLY SESSIONS ------------------------------------------------
-     The date on each card UPDATES ITSELF. Each session has a  repeats:
-     pattern, and the site always shows the next date that matches it.
-
-       repeats:  "1st", "2nd", "3rd", "4th" or "last" + a weekday
-                 e.g. "2nd Friday" or "last Sunday"
-                 (for a one-time event use  date: "2026-12-12"  instead)
-       time / where / desc:  shown on the card
-       map:      optional — an address; makes the location a map link
-       link:     the booking page every button goes to
-       skip:     optional — dates to skip, e.g.  skip: ["2027-01-01"]
-
-     MONTH-ONLY DETAILS: anything inside  october: { ... }  replaces the
-     normal details only when the date shown falls in October (every
-     October). Add  november: { ... }, december: { ... }  the same way —
-     handy for a monthly theme or a rotating location.
-
-     Optional  status:  "few" (Few spots left) or "full" (Full)         */
-  classes: [
+  /* ---- SESSIONS: the kinds of sessions Wyatt offers ----------------------
+     Shown on the Sessions page (and the first four on the Home page).
+       title:  the session's name
+       where:  the small label above the name
+       desc:   a sentence or two about it
+       wide:   true  makes it a full-width dark card (used for special events) */
+  sessions: [
     {
       title: "First Friday Sound Meditation",
-      repeats: "1st Friday",
-      skip: ["2027-01-01"],          // no First Friday on New Year's Day 2027
-      time: "7:30 PM",
-      where: "The Studio · Moran St, Reno",
-      desc: "A sound meditation for making space. Settle onto your mat as layers of sound offer a place to exhale.",
-      link: "https://linktr.ee/soundbaths",
-      october: {
-        title: "First Friday “Let It Fall”",
-        desc: "A seasonal sound meditation for making space. Settle onto your mat as layers of sound offer a place to exhale and welcome the quieter rhythm of autumn."
-      }
+      where: "The Studio · Reno",
+      desc: "A sound meditation for making space. Settle onto your mat as layers of sound offer a place to exhale."
     },
     {
       title: "Bliss Hammock Sound Meditation",
-      repeats: "2nd Friday",
-      time: "6:30 PM or 8:00 PM",
-      where: "Bliss Holistic Center · 1100 Kietzke Ln, Reno",
-      map: "1100 Kietzke Ln, Reno, NV",
-      desc: "Suspended comfort, immersive sound, deep rest. Sink into a gently swaying hammock while soothing sound surrounds you. Coordinate with friends to reserve the same session.",
-      link: "https://linktr.ee/soundbaths"
+      where: "Bliss Holistic Center · Reno",
+      desc: "Suspended comfort, immersive sound, deep rest. Sink into a gently swaying hammock while soothing sound surrounds you. Coordinate with friends to reserve the same session."
     },
     {
       title: "Karma Sound Meditation for CCC",
-      repeats: "2nd Saturday",
-      time: "4:00 PM",
       where: "Cancer Community Clubhouse · Reno",
-      desc: "A welcoming community sound meditation. Gather for an afternoon of grounding resonance, stillness, and restorative rest — no meditation experience needed.",
-      link: "https://linktr.ee/soundbaths"
+      desc: "A welcoming community sound meditation. Gather for an afternoon of grounding resonance, stillness, and restorative rest — no meditation experience needed."
     },
     {
       title: "Juice Box Yoga Sound Meditation",
-      repeats: "last Sunday",
-      time: "7:30–8:30 PM",
-      where: "Juice Box Yoga · rotating location",
-      desc: "An immersive evening of movement, stillness, and sound. Close the month in a supportive yoga space with the deep, settling tones of planetary gongs.",
-      link: "https://linktr.ee/soundbaths",
-      october: {
-        where: "Juice Box Yoga · Legends Mall, Sparks"
-      }
+      where: "Juice Box Yoga · locations vary",
+      desc: "An immersive evening of movement, stillness, and sound. Close the month in a supportive yoga space with the deep, settling tones of planetary gongs."
+    },
+    {
+      title: "Seasonal & special events",
+      where: "Throughout the year",
+      desc: "Solstice gatherings, year-end sound meditations, and other one-time experiences — in Reno–Sparks and, now and then, beyond.",
+      wide: true
     }
   ],
 
