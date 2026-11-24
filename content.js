@@ -30,7 +30,7 @@ const SITE_CONTENT = {
       desc: "In the quiet between Christmas and New Year, settle in for 55 minutes of sound with planetary gongs, large-format crystal bowls, chimes, and Tibetan bowls. A listening practice with nothing to fix and nothing to get right. Simply rest, listen, and let the year settle. 55 minutes of sound, approximately 90 minutes together.",
       image: "images/year-end-reset.jpg",
       imageAlt: "Five planetary gongs and glowing crystal singing bowls set up beside a pool at night",
-      link: "",
+      link: "https://linktr.ee/soundbaths",
       cta: "Book your place",
       note: "Tickets on Eventbrite and through The Yoga Clinic (clinic.yoga)."
     }
@@ -58,6 +58,7 @@ const SITE_CONTENT = {
     {
       title: "First Friday Sound Meditation",
       repeats: "1st Friday",
+      skip: ["2027-01-01"],          // no First Friday on New Year's Day 2027
       time: "7:30 PM",
       where: "The Studio · Moran St, Reno",
       desc: "A sound meditation for making space. Settle onto your mat as layers of sound offer a place to exhale.",
