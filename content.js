@@ -23,7 +23,10 @@ const SITE_CONTENT = {
        title:  the session's name
        where:  the small label above the name
        desc:   a sentence or two about it
-       wide:   true  makes it a full-width dark card (used for special events) */
+       wide:   true  makes it a full-width dark card (used for special events)
+       link:   optional — a different page for this session's button
+               (leave it out and the button books through the Linktree)
+       cta:    optional — the button's words, e.g. "Event details"        */
   sessions: [
     {
       title: "First Friday Sound Meditation",
@@ -38,7 +41,10 @@ const SITE_CONTENT = {
     {
       title: "Karma Sound Meditation for CCC",
       where: "Cancer Community Clubhouse · Reno",
-      desc: "A welcoming community sound meditation. Gather for an afternoon of grounding resonance, stillness, and restorative rest — no meditation experience needed."
+      desc: "A supportive sound meditation for Clubhouse members and the care team — a gentle hour of gongs and bowls in good company.",
+      // Not booked on Linktree — this session is for the Clubhouse community.
+      link: "https://tockify.com/cancercommunityclubhouse/",
+      cta: "Event details"
     },
     {
       title: "Juice Box Yoga Sound Meditation",

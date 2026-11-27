@@ -39,14 +39,17 @@
     var items = (CONTENT.sessions || []).filter(function (s) { return s && s.title && !(compact && s.wide); });
     if (compact) items = items.slice(0, 4);
     grid.innerHTML = items.map(function (s, i) {
+      // A session can have its own link/button text; otherwise it books through Linktree.
+      var href = (s.link || "").trim() || BOOKING;
+      var label = (s.cta || "").trim() || (s.wide ? "See upcoming events" : "Book a session");
       return (
         '<article class="offer reveal' + (s.wide ? " wide" : "") + delayClass(i) + '">' +
           (s.where ? '<span class="tag">' + esc(s.where) + '</span>' : '') +
           '<h3>' + esc(s.title) + '</h3>' +
           (s.desc ? '<p class="offer-desc">' + esc(s.desc) + '</p>' : '') +
           (compact ? '' :
-            '<a class="btn ' + (s.wide ? "btn-primary" : "btn-outline-dark") + '" href="' + esc(BOOKING) + '" target="_blank" rel="noopener"' +
-            ' aria-label="Book a session: ' + esc(s.title) + '">' + (s.wide ? "See upcoming events" : "Book a session") + '</a>') +
+            '<a class="btn ' + (s.wide ? "btn-primary" : "btn-outline-dark") + '" href="' + esc(href) + '" target="_blank" rel="noopener"' +
+            ' aria-label="' + esc(label) + ': ' + esc(s.title) + '">' + esc(label) + '</a>') +
         '</article>'
       );
     }).join("");
