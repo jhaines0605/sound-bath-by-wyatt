@@ -5,7 +5,7 @@ A plain HTML site (no build step) hosted on Netlify, which deploys every push to
 ## Pages
 | File | Page |
 |---|---|
-| `index.html` | Home: what a sound bath is, the session types, kind words |
+| `index.html` | Home: what a sound bath is, featured event (hides after its date), session types, kind words |
 | `sessions.html` | Session types, what to expect, private sessions |
 | `about.html` | Wyatt's story, philosophy, instruments + gallery, monochord for sale |
 | `faq.html` | 40 questions & answers, grouped by topic, with search |

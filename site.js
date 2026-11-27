@@ -31,6 +31,62 @@
     });
   }
 
+  /* ---------------- Featured events (flyer-style cards) ---------------- */
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  function parseDate(str) {
+    var p = String(str || "").split("-");
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return isNaN(d) ? null : d;
+  }
+  function isoDate(d) {
+    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+  }
+  function longDate(d) {
+    return WEEKDAYS[d.getDay()] + ", " + MONTHS[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+  }
+
+  // Shown until the day after the event, then hidden automatically.
+  function renderSpecialEvents() {
+    var box = document.getElementById("specialEvents");
+    if (!box) return;
+    var compact = box.getAttribute("data-compact") === "true";
+    var events = (CONTENT.specialEvents || []).map(function (e) {
+      var d = parseDate(e.date);
+      return d && d >= today ? { e: e, d: d } : null;
+    }).filter(Boolean).sort(function (a, b) { return a.d - b.d; });
+
+    if (!events.length) { box.hidden = true; return; }
+
+    box.innerHTML = events.map(function (item) {
+      var e = item.e, d = item.d;
+      var link = (e.link || "").trim() || BOOKING;
+      var where = esc(e.where || "");
+      if (where && e.map) where = mapLink(where, e.map);
+      return (
+        '<article class="event-feature reveal">' +
+          (e.image ? '<div class="ev-media"><img src="' + esc(e.image) + '" alt="' + esc(e.imageAlt || e.title || "") + '" loading="lazy"></div>' : '') +
+          '<div class="ev-body">' +
+            (e.badge ? '<span class="ev-badge">' + esc(e.badge) + '</span>' : '') +
+            '<h3>' + esc(e.title || "Special event") + '</h3>' +
+            (e.tagline ? '<p class="ev-tagline">' + esc(e.tagline) + '</p>' : '') +
+            '<ul class="ev-facts">' +
+              '<li><span class="ev-label">When</span><span><time datetime="' + isoDate(d) + '">' + longDate(d) + '</time>' +
+                (e.time ? '<br>' + esc(e.time) : '') + '</span></li>' +
+              (where ? '<li><span class="ev-label">Where</span><span>' + where + '</span></li>' : '') +
+              (e.tickets ? '<li><span class="ev-label">Tickets</span><span>' + esc(e.tickets) + '</span></li>' : '') +
+            '</ul>' +
+            (!compact && e.desc ? '<p class="ev-desc">' + esc(e.desc) + '</p>' : '') +
+            '<div class="ev-actions"><a class="btn btn-primary" href="' + esc(link) + '" target="_blank" rel="noopener">' +
+              esc(e.cta || "Book your place") + '</a>' + (e.note ? '<p class="ev-note">' + esc(e.note) + '</p>' : '') + '</div>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join("");
+  }
+
   /* ---------------- Session cards ---------------- */
   function renderSessions() {
     var grid = document.getElementById("sessionGrid");
@@ -93,6 +149,7 @@
     }).join("");
   }
 
+  safe(renderSpecialEvents);
   safe(renderSessions);
   safe(wireBookingLinks);
   safe(renderReviews);

@@ -18,6 +18,29 @@ const SITE_CONTENT = {
   /* ---- BOOKING LINK: where every "Book a session" / "Book now" button goes */
   bookingLink: "https://linktr.ee/soundbaths",
 
+  /* ---- FEATURED EVENT: a big flyer-style card on the Home page ----------
+     Shows above the session types until the day after the event, then
+     disappears on its own. Add another by copying the { ... } block.
+       date:   "YYYY-MM-DD"
+       link:   where the button goes (leave out to use the booking link)
+       image:  a photo in the images folder (optional)                    */
+  specialEvents: [
+    {
+      title: "The Year-End Reset",
+      badge: "Special event · Palm Springs, CA",
+      tagline: "Close the year in sound. Make space for what comes next.",
+      date: "2026-12-30",
+      time: "6:00–7:30 PM · doors open 5:30 PM",
+      where: "The Yoga Clinic · 1701 N Palm Canyon Dr, Ste 3, Palm Springs, CA 92262",
+      map: "1701 N Palm Canyon Dr, Ste 3, Palm Springs, CA 92262",
+      tickets: "20 places only · first-timers welcome",
+      desc: "In the quiet between Christmas and New Year, settle in for 55 minutes of sound with planetary gongs, large-format crystal bowls, chimes, and Tibetan bowls. A listening practice with nothing to fix and nothing to get right. Simply rest, listen, and let the year settle.",
+      image: "images/year-end-reset.jpg",
+      imageAlt: "Five planetary gongs and glowing crystal singing bowls set up beside a pool at night",
+      cta: "Book your place"
+    }
+  ],
+
   /* ---- SESSIONS: the kinds of sessions Wyatt offers ----------------------
      Shown on the Sessions page (and the first four on the Home page).
        title:  the session's name
